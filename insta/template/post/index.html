@@ -1,0 +1,36 @@
+{% extends '../base/base.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-7">
+            {% if data %}
+                {% for i in data %}
+                    <div class="card mb-5">
+                        <div class="card-header d-flex justify-content-between">
+                            <h2 class="card-title">{{ i.username }}</h2>
+                            <a class="my-auto" href="{% url 'post:delete' i.id %}">X</a>
+                        </div>
+                        <img src="http://localhost:8000/{{ i.photo }}" alt="" class="card-img post-img">
+                        <div class="card-body">
+                            <p>{{ i.content }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a class="far fa-heart mr-2" href="{% url 'post:like' i.id %}"><span class="ml-1">{{i.like}}</span></a>
+                            <a class="fas fa-heart-broken" href="{% url 'post:dislike' i.id %}"><span class="ml-1">{{i.dislike}}</span></a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-5">
+            <div class="sticky-top">
+                <h2 class="text-center">Ajoutez un post</h2>
+                <form enctype="multipart/form-data" class="form-group bg-dark p-3 mt-3 mx-auto rounded text-center text-white" action="{% url 'post:index' %}" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input class="btn btn-primary" type="submit">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
